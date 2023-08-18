@@ -1,0 +1,35 @@
+# write a SQl query to display emp name who is taking Max(salary)
+
+select e_id,e_name,salary from emm
+where salary=(select max(salary) from emm);
+
+# write a sql queries to display second highest
+#salary from emm table.
+
+select max(salary) from emm
+where salary <>(select max(salary) from emm);
+
+select max(salary) from emm
+where salary <>(select Max(salary) from emm);
+
+# write a sql queries to display employee name who is taking second highest salary
+
+select e_id,e_name,salary from emm
+where salary =(select max(salary) from emm where salary <>(select max(salary) from emm));
+
+select e_id,e_name,salary from emm
+where salary in (select max(salary) from emm where salary <>(select max(salary)from emm));
+
+#write a sql  query to display all the dept name alog with no. of emp working
+
+select * from emm1;
+
+select dept_name,count(*) as number from emm1
+group by dept_name;
+
+select dept_name,count(dept_name) as number from emm1
+group by dept_name;
+
+#we can use her count* because yeh her depart ke aage uska count dedega ki kitne hai.
+
+# write a sql query to display all the dept name where no of emp are less than 2
