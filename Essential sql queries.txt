@@ -1,0 +1,293 @@
+6. What is a database view?
+7. What's the difference between a primary key & a foreign key?
+8. Have you had to troubleshoot a slow query before? How did you do it?
+9. When should you use a Sub-Query vs. CTE?
+10. Can you write a SQL query to find the 3-day rolling average?
+(very similar to the Twitter DataLemur question in the comments)
+11. Can you write a SQL query to find the most frequently purchased pairs of items?
+(very similar to the Walmart DataLemur question in the comments)
+
+
+1.Write a query to fetch the EmpFname from the EmployeeInfo table in upper case and use the ALIAS name as EmpName.
+
+=>select upper(EmpFname) as EmpName from Employeeinfo;
+
+2.Write a query to fetch the number of employees working in the department ‘HR’.
+
+=> select count(*) from EmployeeInfo where department='HR';
+
+3.Write a query to get the current date.
+
+=> Select Systdate();
+
+4.Write a query to retrieve the first four characters of  EmpLname from the EmployeeInfo table.
+
+=> Select substring(EmpLname 1,4) from EmployeeInfo;
+
+5.Write a query to find all the employees whose salary is between 50000 to 100000.
+
+=> select * from employee where salary between 50,000 and 100000;
+
+6.Write a query to find the names of employees that begin with ‘S’.
+
+=> select * from employee where emp_name like 'S';
+
+7. Write a query to fetch top N records.
+
+=>
+#1  select top N * from employeePosition
+      order by salary desc;
+
+#2  select * from employee
+     order  by salary desc limit N;	
+
+8.Write a query to retrieve the EmpFname and EmpLname in a single column as “FullName”. The first name and the last name must be separated with space.
+
+=> select concat(empFname, '  ' ,empLname) as 'full_name'  from employeeInfo;
+
+9.Write a query find number of employees whose DOB is between 02/05/1970 to 31/12/1975 and are grouped according to gender
+
+=> select count(*), gender from employeeInfo where Dob between '02/05/1970' and '31/12/1975' group by gender;	
+
+10.Write a query to fetch all the records from the EmployeeInfo table ordered by EmpLname in descending order and Department in the ascending order.
+
+=> select * from employeeInfo order by empLname desc , department asc;
+
+11.Write a query to fetch details of employees whose EmpLname ends with an alphabet ‘A’ and contains five alphabets.
+
+=> select * from employee where empLname like '____a';
+
+12.Write a query to fetch details of all employees excluding the employees with first names, “Sanjay” and “Sonia” from the EmployeeInfo table.
+
+=> Select * from employeeInfo where first_name not in('Sanjay' , 'Sonia');
+
+13.Write a query to fetch details of employees with the address as “DELHI(DEL)”
+
+=> select * from employeeinfo where address like 'DELHI(DEL)';
+
+14.Write a query to fetch all employees who also hold the managerial position.
+
+=>
+select E.Fname, E.Lname P.Empposition
+from employeeinfo inner join employeePosition p on
+e.emp_id = p.emp_id and P.emposition in ('Manager');
+
+15. Write a query to fetch the department-wise count of employees sorted by department’s count in ascending order.
+
+=> 
+select count(department) as emp_dept
+from employeeinfo
+group by department
+order by emp_dept asc;
+
+16.Write a query to calculate the even and odd records from a table.
+=>
+for even
+select empid from
+(select rowno,emp_id from employeeInfo) where mod(rowno,2)=0
+
+select emp_id from
+(select rowno,emp_id from employeeInfo) where nod(rowno,2)=1
+
+17.Write a SQL query to retrieve employee details from EmployeeInfo table who have a date of joining in the EmployeePosition table.
+
+=>
+select * from employeinfo E
+where exists
+(select * from emp_position)p where E.emp_id= P.emp_id);
+
+18.Write a query to display the first and the last record from the EmployeeInfo table.
+
+=> for first record
+
+select * from employee info
+where emp_id=
+(select min(emp_id) from employeeinfo);
+
+=>for last max resord
+
+select * from employeeInfo
+where emp_id =
+(select max(emp_id) from employeeInfo);
+
+19.Write a query to retrieve Departments who have less than 2 employees working in it.
+
+=> select department, count(empId) as emp_no
+from employeeInfo
+group by department
+having count(empId) < 2;
+
+20.Write a query to retrieve EmpPostion along with total salaries paid for each of them.
+
+=> 
+select EmpPosition, sum(salary) from employeePostion
+group by empPostion;
+
+21.Write a query to fetch 50% records from the EmployeeInfo table.
+
+select * from employee
+where empId <=
+(select count(empId)/2 from employeeInfo);
+
+
+22.write a SQL query to calculate total purchase amount of all orders.
+
+=> select sum(purch_amount)  as total_purchase from orders;
+
+
+23.write a SQL query to calculate the average purchase amount of all orders.
+
+=>Select avg(puch_amount) as avg_amount from orders;
+
+24.write a SQL query that counts the number of unique salespeople.
+
+=> select distinct (count saleman_id) from orders;
+
+25.write a SQL query to count the number of customers.
+
+=> select count(*) from customer;
+
+26.write a SQL query to determine the number of customers who received at least one grade for their activity
+
+=> select count(all grade) from customer;
+
+27.write a SQL query to find the maximum purchase amount
+
+=> select Max(puch_amt) from orders;
+
+28.write a SQL query to find the minimum purchase amount.
+=> select min(puch_amount) from orders;
+
+29.write a SQL query to find the highest grade of the customers in each city.
+
+=> select city,max(grade) as max_grade
+    from customer
+    group by city;
+
+30.write a SQL query to find the highest purchase amount ordered by each customer.
+
+=> select customer_id,max(puch_amt) as max_puch_amount
+     from customer group by customer_id;
+
+31.write a SQL query to find the highest purchase amount ordered by each customer on a particular date.
+
+=> Select customer_id, order_date, max(puch_amt) from customer
+     order by customer_id,order_date;
+
+32.write a SQL query to determine the highest purchase amount made by each salesperson on '2012-08-17'
+
+=> Select saleman_id,sum(purch_amount) from customer
+     where order_date ='2012-08-17'
+     group by salemen_id;
+
+34.write a SQL query to find the highest order (purchase) amount by each customer on a particular order date. Filter the result by highest order (purchase) amount above 2000.00.
+
+=> Select customer_id, ord_date ,max(purch_amount) as Max_amount
+      from customer
+     group by customer_id,order_date
+     having max(purch_amot) > 2000;
+
+35.Write a SQL query to find the maximum order (purchase) amount in the range 2000 - 6000 (Begin and end values are included.) by combination of each customer and order date.
+
+=>select customer_id order_date max(pur_amot) from orders 
+    group by customer_id,order_date
+    having max(puch_amot) between 2000 and 6000;
+
+36.write a SQL query to find the maximum order (purchase) amount based on the combination of each customer and order date. Filter the rows for maximum order (purchase) amount is either 2000, 3000, 5760, 6000.
+
+=>Select customer_id,order_date, max(purch_amount) from customer
+    group by cuatomer_id,order_date
+    having max(prch_amot) In (2000, 3000, 5760, 6000);
+
+37.write a SQL query to determine the maximum order amount for each customer. The customer ID should be in the range 3002 and 3007(Begin and end values are included.).
+
+=> Select customer_id ,max(purch_amot) from orders
+     where customer_id between 3003 and 3007
+     group by customer_id;
+
+
+38.write a SQL query to find the maximum order (purchase) amount for each customer.The customer ID should be in the range 3002 and 3007(Begin and end values are included.).Filter the rows for maximum order (purchase) amount is higher than 1000.
+
+=> select customer_id, max(puch_amt) from customer
+     where  customer_id between 3002 and 3007
+     group by cutomer_id
+    having max(purch_amt)>1000;
+
+39.write a SQL query to determine the maximum order (purchase) amount generated by each salesperson.Filter the rows for the salesperson ID is in the range 5003 and 5008 (Begin and end values are included.).
+
+=> select saleman_id, max(puch_amot) 
+     from orders  
+    group by salesman_id
+    having saleman_id between 5003 and 5008;
+
+40.write a SQL query to count all the orders generated on '2012-08-17'.
+     
+=> select count(*) from orders where order_date ='2012-08-17';
+
+41.write a SQL query to count the number of salespeople in a city.
+
+=> select count(*) from saleman where city is not null;
+
+42.write a SQL query to count the number of orders based on the combination of each order date and salesperson.
+
+=> select order_date,saleman_id count(*)
+     from orders
+    group by order_date,saleman_id;
+
+43.write a SQL query to calculate the average product price.
+=>select avg(pro_prize) from item_mast;
+
+
+44.write a SQL query to count the number of products whose price are higher than or equal to 350.
+
+=>select count(*) from item_mast where price_pro >=350;
+
+45.write a SQL query to compute the average price for unique companies.
+
+=> select avg(pro_price) as avg_price,pro_com as company_id from item_mast group by pro_com;
+
+46.write a SQL query to compute the sum of the allotment amount of all departments. 
+
+=>select sum(DPT_ALLOTMENT) from  emp_department;
+
+
+47.write a SQL query to count the number of employees in each department.
+
+=> select emp_dept, count(*) from emp_details 
+
+48.How to find duplicate in a given table.
+
+=>select emp_id , count(1) from emp
+    group by emp_id
+    having count(1) >1;
+
+49. How to delete duplicate.
+
+=> 
+CTE duplicate_value as
+(select *,row_number() over(Partition by emp_id order by emp_id) as DP from emp)
+
+delete from duplicate_value where dp>1;
+
+50.Second Hight salary in each dept
+
+=> 
+select * from 
+(select emp.* ,dence_rank()
+over(partition by dept_id order by salary)as HS from employee)
+
+where hs=2
+
+51.WAQ to ritrive the store location and citye as a single colum.
+
+=> select store_location, city, concate(store_location, city) as address from store details.
+
+52.
+
+
+
+
+
+
+
+
